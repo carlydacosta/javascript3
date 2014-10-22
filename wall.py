@@ -2,13 +2,13 @@ import json
 
 from flask import Flask, request, render_template, make_response
 
-from api import wall_list, wall_add, wall_error
+from api import wall_list, wall_add, wall_error, wall_clear
 
 
 app = Flask(__name__)
 
 # The "secret key" is needed for the Flask session machinery. In a real
-# application, this should be a unguessable string and should NOT be
+# application, this should be an unguessable string and should NOT be
 # checked into version control. Typically, one stores this as an
 # environmental variable outside of the Flask app and gets it with
 # os.environ['MY_SECRET_KEY']. For our exercise purposes, though, it's
@@ -46,14 +46,6 @@ def _convert_to_JSON(result):
     return response
 
 
-@app.route("/api/wall/list")
-def list_messages():
-    """Return list of wall messages as JSON."""
-
-    result = wall_list()
-    return _convert_to_JSON(result)
-
-
 @app.route("/api/wall/add", methods=['POST'])
 def add_message():
     """Add a message and return list of wall messages as JSON."""
@@ -74,6 +66,22 @@ def add_message():
 
     return _convert_to_JSON(result)
 
+
+@app.route("/api/wall/list")
+def list_messages():
+    """Return list of wall messages as JSON."""
+
+    
+
+    result = wall_list()
+    return _convert_to_JSON(result)
+
+@app.route("/api/wall/clear")
+def clear_messages():
+    #result is the default message session 
+    result = wall_clear()
+    #converting it to JSON to output to browser
+    return _convert_to_JSON(result)
 
 
 if __name__ == "__main__":
