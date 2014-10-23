@@ -28,16 +28,20 @@ function handleFormSubmit(evt) {
     textArea.val("");
 }
 
-
+/**
+Clear Messages handler.  Do this when someone clicks the Clear Messages button.
+*/
 function handleClearMessages(evt) {
+    // when I click the Clear Messages button, the default would be to route me somewhere off the current page.  This prevents us from leaving the page we're on.  
     evt.preventDefault();
 
 
     $.get(      //method used to retrieve data from the server
-        "/api/wall/clear",  //url from which we are retrieving data
-        
-        //print to the console the session
+        "/api/wall/clear",  //url (address) that we send to the server.  The server goes to this address.  In this case, the route brings us to the Python function clear_messages.  This function returns wall_clear() in JSON format, which is our 'result'.
+
+        // when the result is received, do this function.
         function(result){
+            // print to the console the session
             console.log("getMessage: ", result);
             //Call the function that actually changes the output of the template/html
             displayMessages(result);
@@ -59,9 +63,9 @@ function addMessage(msg) {
 
     $.post(  //method used to submit data to be processed by the server
         "/api/wall/add",
-        // the data we are sending to the url (in wall.py).
+        // this is the data we are sending to the url (in wall.py). this route uses the POST method, as seen in wall.py, and the function needs 'm'.
         {'m': msg},
-        //if request succeeds, this function is run. data is the entire list of messages.
+        //if request succeeds, this function is run. data is the entire list / array of messages.
         function (result) {
             console.log("addMessage: ", result);
             displayMessages(result);
@@ -91,7 +95,7 @@ function getMessages() {
 // this is where the html is actually being "changed"
 function displayMessages(result) {   //The input is an array (list) of objects (dictionaries)
 
-    
+    // this function first asks for the values in the 
     var msgs = result['messages'];
 
     $('#message-container').empty();

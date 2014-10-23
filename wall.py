@@ -50,10 +50,10 @@ def _convert_to_JSON(result):
 def add_message():
     """Add a message and return list of wall messages as JSON."""
 
-    # Get the message from the "m" argument passed in the POST.
+    # Get the message from the "m" argument passed in the POST object { m : msg }.
     # (to get things from a GET response, we've used request.args.get();
     # this is the equivalent for getting things from a POST response)
-    msg = request.form.get('m').strip()
+    msg = request.form.get('m').strip()  #strip is just removing the whitespace on either side of my message
 
     if msg is None:
         result = wall_error("You did not specify a message to set.")
@@ -62,9 +62,9 @@ def add_message():
         result = wall_error("Your message is empty")
 
     else:
-        result = wall_add(msg)
+        result = wall_add(msg) # function wall_add(msg) in api.py that returns a list of all wall messages from wall_list() in api.py
 
-    return _convert_to_JSON(result)
+    return _convert_to_JSON(result)  # a list of wall messages in the session
 
 
 @app.route("/api/wall/list")
@@ -78,6 +78,7 @@ def list_messages():
 
 @app.route("/api/wall/clear")
 def clear_messages():
+    """Returns an empty list of wall messages, except for default message, as JSON."""
     #result is the default message session 
     result = wall_clear()
     #converting it to JSON to output to browser
